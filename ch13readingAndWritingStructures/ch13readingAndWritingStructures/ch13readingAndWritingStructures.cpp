@@ -6,29 +6,27 @@
 #include <cstring>
 #include <cctype> // for toUpper()
 #include <string>
+#include <iomanip>
 using namespace std;
 
-const int NAME_SIZE = 51, ADDRESS_SIZE = 51, PHONE_SIZE = 14;
-struct Info
+const int ITEM_SIZE = 15;
+struct Inventory
 {
-	char name[NAME_SIZE];
-	int age;
-	char address1[ADDRESS_SIZE];
-	char address2[ADDRESS_SIZE];
-	char phone[PHONE_SIZE];
+	char item[ITEM_SIZE];
+	int quantity;
+	double price;
 };
 
 int main()
 {
     cout << "Chapter 13 Inventory by Kevin Bell\n\n";
-	Info person; // Store information about a person
+	Inventory inventory; // Store information about an inventory
 	char response; // User's response to a question
-	
 	string input; // used to read strings
 	
 	//create file object and open file
-	fstream people("people.dat", ios::out | ios::binary);
-	if (!people)
+	fstream items("items.dat", ios::out | ios::binary);
+	if (!items)
 	{
 		cout << "Error opening file. Program terminated.";
 		return 1;
@@ -37,33 +35,21 @@ int main()
 	//keep getting information from user and writing to file in binary mode
 	do
 	{
-		//get name
-		cout << "Enter the person's name: ";
+		//get item name
+		cout << "Enter name of inventory object: ";
 		getline(cin, input);
-		strcpy_s(person.name, input.c_str());
+		strcpy_s(inventory.item, input.c_str());
+		
+		//get price of item
+		cout << "Enter price of inventory object: $";
+		cin >> inventory.price;
 
-		//get age
-		cout << "Enter the person's age: ";
-		cin >> person.age;
-
-		//get address
-		cout << "Enter the person's address: ";
-		cin.ignore();
-		getline(cin, input);
-		strcpy_s(person.address1, input.c_str());
-
-		//get address
-		cout << "Enter the person's address: ";
-		getline(cin, input);
-		strcpy_s(person.address2, input.c_str());
-
-		//get phone number
-		cout << "Enter the person's phone number: ";
-		getline(cin, input);
-		strcpy_s(person.phone, input.c_str());
+		//get quantity
+		cout << "Quantity of that object: ";
+		cin >> inventory.quantity;
 
 		//write the record to the file
-		people.write(reinterpret_cast<char*>(&person), sizeof(person));
+		items.write(reinterpret_cast<char*>(&inventory), sizeof(inventory));
 
 		//ask user if they want to enter another record
 		cout << "Do you want to enter another record? (Y/N): ";
@@ -72,31 +58,39 @@ int main()
 		response = toupper(response);
 	} while (response == 'Y');
 	//close the file
-	people.close();	
+	items.close();
 	
 	//open the file for reading
-	people.open("people.dat", ios::in | ios::binary);
-	if (!people)
+	items.open("items.dat", ios::in | ios::binary);
+	if (!items)
 	{
 		cout << "Error opening file. Program terminated.";
 		return 1;
 	}
 	
 	//read the first record from the file
-	people.read(reinterpret_cast<char*>(&person), sizeof(person));
+	items.read(reinterpret_cast<char*>(&inventory), sizeof(inventory));
 	
-	//display the records
-	while (!people.eof()) {
-		cout << "Name: " << person.name << endl
-			<< "Age: " << person.age << endl
-			<< "Address: " << person.address1 << endl
-			<< "Address: " << person.address2 << endl
-			<< "Phone: " << person.phone << endl << endl;
-		people.read(reinterpret_cast<char*>(&person), sizeof(person));
-	} //end while
+	
+	//display the records as a table
+	//use setw to format the output
+	
+	cout << setw(ITEM_SIZE) << left << "Item" << setw(10) << right << "Quantity" << setw(14) << right << "Price" << endl;
+	cout << "------------------------------------------" << endl;
+	
+	//while not at the end of the file, read the record from the file
+	while (!items.eof())
+	{
+		//display the record with set precision 2 for price and dollar sign for price
+		cout << setw(ITEM_SIZE) << left << inventory.item << setw(10) << right << inventory.quantity << setw(10) << right << setprecision(2) << fixed << "$" << inventory.price << endl;
+		
+		//read the next record from the file
+		items.read(reinterpret_cast<char*>(&inventory), sizeof(inventory));
+	} //end while loop
 	
 	//close the file
-	people.close();
+	items.close();
+	cout << "Complete" << endl;
 	system("pause");
 	return 0;
 } //end main
