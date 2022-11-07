@@ -4,13 +4,13 @@ In the section in the book about creating records with structures, page 881, the
 
 Create a C++ project that uses a file to hold information about the inventory for a store. It can be any type of store, any type of products -- these instructions use an office supply store with 4 objects, pens, blue pencils, black pencils, and erasers. The inventory structure has a name, a price, and a quantity. The first part of the project asks the user for information about each inventory item and writes the structure to the file. The second half of the project reads the inventory data from the file and displays it on the screen.
 
-Ch 13 File Read Write
+![Ch 13 File Read Write](https://github.com/bell-kevin/ch13readingAndWritingStructures/blob/main/inventory.PNG)
 
 Notice that the user enters inventory information until they specify they are done. Note that the name of an inventory object can be more than one word. The store inventory is displayed in a tabular format with 2 decimal places for money numbers.
 
 Run the project and take a screenshot of the results, as shown above. Look at the file that was created in NotePad++ and take a screenshot. That is a binary file, and it will look something like this:
 
-Ch 13 File Read Write binary file
+![Ch 13 File Read Write binary file](https://github.com/bell-kevin/ch13readingAndWritingStructures/blob/main/inventory2.PNG)
 
  
 
