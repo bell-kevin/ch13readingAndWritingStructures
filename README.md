@@ -1,6 +1,6 @@
 # ch13readingAndWritingStructures
 
-In the section in the book about creating records with structures, there is code for 2 programs, one for writing a struct to a file, one for reading a struct from a file. In this project, you will combine those into one program.
+In the section in the book about creating records with structures, page 881, there is code for 2 programs, one for writing a struct to a file, one for reading a struct from a file. In this project, you will combine those into one program.
 
 Create a C++ project that uses a file to hold information about the inventory for a store. It can be any type of store, any type of products -- these instructions use an office supply store with 4 objects, pens, blue pencils, black pencils, and erasers. The inventory structure has a name, a price, and a quantity. The first part of the project asks the user for information about each inventory item and writes the structure to the file. The second half of the project reads the inventory data from the file and displays it on the screen.
 
