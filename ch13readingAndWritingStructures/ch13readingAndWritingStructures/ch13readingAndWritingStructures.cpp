@@ -40,7 +40,7 @@ int main()
 		//get name
 		cout << "Enter the person's name: ";
 		getline(cin, input);
-		strcpy(person.name, input.c_str());
+		strcpy_s(person.name, input.c_str());
 
 		//get age
 		cout << "Enter the person's age: ";
@@ -50,17 +50,17 @@ int main()
 		cout << "Enter the person's address: ";
 		cin.ignore();
 		getline(cin, input);
-		strcpy(person.address1, input.c_str());
+		strcpy_s(person.address1, input.c_str());
 
 		//get address
 		cout << "Enter the person's address: ";
 		getline(cin, input);
-		strcpy(person.address2, input.c_str());
+		strcpy_s(person.address2, input.c_str());
 
 		//get phone number
 		cout << "Enter the person's phone number: ";
 		getline(cin, input);
-		strcpy(person.phone, input.c_str());
+		strcpy_s(person.phone, input.c_str());
 
 		//write the record to the file
 		people.write(reinterpret_cast<char*>(&person), sizeof(person));
@@ -71,10 +71,32 @@ int main()
 		cin.ignore();
 		response = toupper(response);
 	} while (response == 'Y');
+	//close the file
+	people.close();	
+	
+	//open the file for reading
+	people.open("people.dat", ios::in | ios::binary);
+	if (!people)
+	{
+		cout << "Error opening file. Program terminated.";
+		return 1;
+	}
+	
+	//read the first record from the file
+	people.read(reinterpret_cast<char*>(&person), sizeof(person));
+	
+	//display the records
+	while (!people.eof()) {
+		cout << "Name: " << person.name << endl
+			<< "Age: " << person.age << endl
+			<< "Address: " << person.address1 << endl
+			<< "Address: " << person.address2 << endl
+			<< "Phone: " << person.phone << endl << endl;
+		people.read(reinterpret_cast<char*>(&person), sizeof(person));
+	} //end while
 	
 	//close the file
 	people.close();
-	
-	
-	}
-}
+	system("pause");
+	return 0;
+} //end main
